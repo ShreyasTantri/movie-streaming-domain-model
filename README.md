@@ -1,4 +1,3 @@
-# movie-streaming-domain-model
 # Movie Streaming Domain Model
 
 This repository contains my solutions for the **Domain Modeling using Enums & Associated Values** assignment.
