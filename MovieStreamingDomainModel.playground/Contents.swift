@@ -1,29 +1,87 @@
-/*
-Objective
-The purpose of this assignment is NOT to practice Enum syntax.
-The objective is to think like an iOS Engineer who is designing a robust, scalable and type-safe domain
-model.
-Throughout this assignment, continuously ask yourself:
-"Can my model represent an invalid state?"
-If the answer is Yes, redesign it.
-Problem Statement
-You are designing the backend models for a Movie Streaming Application (similar to Netflix / Prime
-Video).
-Design the domain models using Swift.
-Avoid using String or Int where an Enum would make the design safer.
-Avoid multiple Optional properties if they can create invalid states.
-Feature 1 — User Subscription
-A user can have one of the following subscription plans:
- Free
- Mobile
- Premium
- Family
+import Foundation
 
-Think carefully.
- 1. Does each plan require additional information?
- No. Not every subscription plan requires additional information. A plan like Free can be fully represented by its type alone because there is no extra information needed to describe it.However, plans such as Family may require additional information (for example, the number of allowed members) to completely define the subscription.
-******
- 2. Can some plans carry Associated Values?
- Yes. Plans that require additional information can use associated values. For example, a Family plan could carry the maximum number of allowed members. This ensures that the required information always exists whenever that plan is used.
-******
- */
+//Task 1 - Design all required Enums
+
+// a. Video Quality
+enum VideoQuality {
+    case auto
+    case resolution480p
+    case resolution720p
+    case resolution1080p
+    case resolution4K
+}
+
+// b. User Subscription
+enum SubscriptionPlan {
+    case free
+    case mobile
+    case premium
+    case family(maxMembers: Int)
+}
+
+// c. Movie Playback
+enum DownloadFailureReason {
+    case noInternet
+    case serverError
+    case timeout
+    case insufficientStorage
+}
+
+enum PlaybackState {
+    case notStarted
+    case continueWatching(position: TimeInterval)
+    case completed
+    case downloading(progress: Double)
+    case downloadFailed(reason: DownloadFailureReason)
+}
+
+// d. Payment Result
+enum PaymentFailureReason {
+    case insufficientBalance
+    case networkError
+    case bankServerError
+    case paymentDeclined
+    case timeout
+}
+
+enum PaymentResult {
+    case success(transactionID: String)
+    case pending(since: Date)
+    case failed(reason: PaymentFailureReason)
+}
+
+// e. User Authentication
+enum OTPDeliveryMethod {
+    case whatsApp
+    case sms
+    case email
+}
+
+enum AccountLockReason {
+    case tooManyFailedAttempts
+    case suspiciousActivity
+}
+
+enum ServerErrorReason {
+    case serviceUnavailable
+    case internalServerError
+    case timeout
+    case maintenance
+}
+
+enum LoginResult {
+    case loggedIn(accessToken: String, refreshToken: String, sessionID: String)
+    case invalidCredentials
+    case otpRequired(verificationID: String, deliveryMethod: OTPDeliveryMethod)
+    case accountLocked(reason: AccountLockReason)
+    case serverError(reason: ServerErrorReason)
+}
+
+// f. Notifications
+enum NotificationType {
+    case newEpisodeReleased(showID: String, season: Int, episode: Int)
+    case downloadCompleted(movieID: String)
+    case paymentSuccessful(transactionID: String)
+    case subscriptionExpiring(expiryDate: Date)
+    case watchlistRecommendation(movieID: String)
+}
